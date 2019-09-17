@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+  client:
+    image: fib-client:1.13.0
+    build:
+      context: .
+      dockerfile: ./client/Dockerfile
+      cache_from:
+        - golang:1.13.0-alpine
+        - fib-client:1.13.0
+    depends_on:
+      - server
+    environment:
+      - HTTP_PORT=9999
+      - FIB_SERVICE_ADDR=server
+      - FIB_SERVICE_PORT=3000
+    ports:
+      - "9999:9999"
+
+  server:
+    image: fib-server:1.13.0
+    build:
+      context: .
+      dockerfile: ./server/Dockerfile
+      cache_from:
+        - golang:1.13.0-alpine
+        - fib-server:1.13.0
+    environment:
+      - FIB_SERVICE_ADDR=0.0.0.0
+      - FIB_SERVICE_PORT=3000
+    ports:
+      - "3000:3000"
+    container_name: fib_server
+  

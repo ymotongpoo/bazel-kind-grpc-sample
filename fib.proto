@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package fibonacci;
+
+message GetFibonacciRequest {
+    int64 nth = 1;
+}
+
+message GetNthResponse {
+    int64 number = 1;
+}
+
+message GetListUntilNthResponse {
+    repeated int64 numbers = 1;
+}
+
+service FironacciService {
+    rpc GetNth(GetFibonacciRequest) returns (GetNthResponse) {}
+    rpc GetListUntilNth(GetFibonacciRequest) returns (GetListUntilNthResponse) {}
+}
