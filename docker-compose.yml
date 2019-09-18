@@ -11,10 +11,13 @@ services:
         - fib-client:1.13.0
     depends_on:
       - server
+      - jaeger
     environment:
       - HTTP_PORT=9999
       - FIB_SERVICE_ADDR=server
       - FIB_SERVICE_PORT=3000
+      - JAEGER_ADDR=jaeger
+      - JAEGER_PORT=14268
     ports:
       - "9999:9999"
 
@@ -26,10 +29,26 @@ services:
       cache_from:
         - golang:1.13.0-alpine
         - fib-server:1.13.0
+    depends_on:
+      - jaeger
     environment:
       - FIB_SERVICE_ADDR=0.0.0.0
       - FIB_SERVICE_PORT=3000
+      - JAEGER_ADDR=jaeger
+      - JAEGER_PORT=14268
     ports:
       - "3000:3000"
-    container_name: fib_server
-  
+
+  # https://www.jaegertracing.io/docs/1.14/getting-started/
+  jaeger:
+    image: jaegertracing/all-in-one:1.14
+    environment:
+      - COLLECTOR_ZIPKIN_HTTP_PORT=9411
+    ports:
+      - "5775:5775/udp"
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5778:5778"
+      - "16686:16686"
+      - "14268:14268"
+      - "9411:9411"
