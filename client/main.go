@@ -26,7 +26,7 @@ import (
 	"google.golang.org/grpc"
 
 	"github.com/labstack/echo"
-	fib "github.com/ymotongpoo/docker-compose-grpc-sample/genproto"
+	fib "github.com/ymotongpoo/bazel-kind-grpc-sample/fib"
 )
 
 var (
