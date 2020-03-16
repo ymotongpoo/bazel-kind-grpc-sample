@@ -12,6 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+//go:generate protoc -I ../proto --go_out=plugins=grpc:../proto ../proto/fib.proto
+
 package main
 
 import (
@@ -24,7 +26,7 @@ import (
 
 	"google.golang.org/grpc"
 
-	fib "github.com/ymotongpoo/bazel-kind-grpc-sample/fib"
+	fib "github.com/ymotongpoo/bazel-kind-grpc-sample/proto"
 )
 
 var (

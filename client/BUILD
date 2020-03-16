@@ -6,6 +6,7 @@ go_library(
     importpath = "github.com/ymotongpoo/bazel-kind-grpc-sample/client",
     visibility = ["//visibility:private"],
     deps = [
+        "//proto:go_default_library",
         "@com_github_labstack_echo//:go_default_library",
         "@org_golang_google_grpc//:go_default_library",
     ],

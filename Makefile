@@ -12,10 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-.PHONY: clean server client run
+.PHONY: clean gazelle proto ferver client run
 
 clean:
 	bazel clean --expunge
+
+gazelle:
+	bazel run :gazelle -- update-repos -from_file=client/go.mod -to_macro=repositories.bzl%go_repositories
+	bazel run :gazelle -- update-repos -from_file=server/go.mod -to_macro=repositories.bzl%go_repositories
 
 proto:
 	bazel build //proto:go_default_library
