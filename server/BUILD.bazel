@@ -5,7 +5,10 @@ go_library(
     srcs = ["main.go"],
     importpath = "github.com/ymotongpoo/bazel-kind-grpc-sample/server",
     visibility = ["//visibility:private"],
-    deps = ["@org_golang_google_grpc//:go_default_library"],
+    deps = [
+        "//proto:go_default_library",
+        "@org_golang_google_grpc//:go_default_library",
+    ],
 )
 
 go_binary(
