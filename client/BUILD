@@ -22,6 +22,8 @@ go_binary(
     name = "client",
     embed = [":go_default_library"],
     visibility = ["//visibility:public"],
+    cgo = False,
+    out = "client",
 )
 
 container_image(
@@ -30,7 +32,7 @@ container_image(
     directory = "/workdir",
     workdir = "/workdir",
     files = [
-        "//client:client",
+        ":client",
     ],
     cmd = [
         "/workdir/client"

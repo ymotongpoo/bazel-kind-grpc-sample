@@ -15,4 +15,28 @@ go_binary(
     name = "server",
     embed = [":go_default_library"],
     visibility = ["//visibility:public"],
+    cgo = False,
+    out = "server",
+)
+
+container_image(
+    name = "server_container",
+    base = "@distroless_base_debian10_debug//image",
+    directory = "/workdir",
+    workdir = "/workdir",
+    files = [
+        ":server",
+    ],
+    cmd = [
+        "/workdir/server"
+    ]
+)
+
+container_push(
+    name = "server_push",
+    format = "Docker",
+    image = ":server_container",
+    registry = "gcr.io",
+    repository = "$(PROJECT_ID)/$(REPO)",
+    tag = "bazel",
 )
