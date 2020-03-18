@@ -30,5 +30,8 @@ server:
 client:
 	bazel build //client:client
 
+push_all:
+	bazel build :push_all
+
 run:
 	docker-compose up

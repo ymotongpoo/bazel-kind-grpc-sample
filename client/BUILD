@@ -6,6 +6,8 @@ load(
     "container_layer",
 )
 
+
+
 go_library(
     name = "go_default_library",
     srcs = ["main.go"],
@@ -20,14 +22,15 @@ go_library(
 
 go_binary(
     name = "client",
+    visibility = ["//:__pkg__"],
     embed = [":go_default_library"],
-    visibility = ["//visibility:public"],
     cgo = False,
     out = "client",
 )
 
 container_image(
     name = "client_container",
+    visibility = ["//:__pkg__"],
     base = "@distroless_base_debian10_debug//image",
     directory = "/workdir",
     workdir = "/workdir",
@@ -41,9 +44,10 @@ container_image(
 
 container_push(
     name = "client_push",
+    visibility = ["//:__pkg__"],
     format = "Docker",
     image = ":client_container",
     registry = "gcr.io",
-    repository = "$(PROJECT_ID)/$(REPO)",
+    repository = "$(project_id)/$(repo)",
     tag = "bazel",
 )
