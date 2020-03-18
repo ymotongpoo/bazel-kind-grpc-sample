@@ -13,7 +13,9 @@ This is a sample application that demonstrates:
 ## prerequisites
 
 * [Bazel](https://bazel.build/)
-* [Kind](https://github.com/kubernetes-sigs/kind) for local testing
+* [Kind](https://kind.sigs.k8s.io/) for local testing
+  * [Docker](https://www.docker.com/)
+  * Go 1.11+
 * [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine) (optional)
   * In the case you'd like to run this sample on GKE
 
