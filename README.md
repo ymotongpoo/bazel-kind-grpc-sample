@@ -41,6 +41,12 @@ For ease to use, you need one of the following environments:
 * Google Kubernetes Engine
 * ...or whatever Kubernetes cluster you can prepare
 
+#### 2.1 Install Kind
+
+```
+$ GO111MODULE="on" go get sigs.k8s.io/kind@v0.7.0 && kind create cluster
+```"
+
 ### 3. Run Bazel target
 
 To be documented...
