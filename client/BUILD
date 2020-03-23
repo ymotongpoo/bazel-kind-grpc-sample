@@ -43,7 +43,7 @@ go_binary(
 container_image(
     name = "client_container",
     visibility = ["//:__pkg__"],
-    base = "@distroless_base_debian10_debug//image",
+    base = "@distroless_base_debian10//image",
     directory = "/workdir",
     workdir = "/workdir",
     files = [

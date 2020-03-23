@@ -1,0 +1,72 @@
+# Copyright 2020 Yoshi Yamaguchi
+#
+# Licensed under the Apache License, Version 2.0 (the "License")
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client
+spec:
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+      - name: client
+        image: gcr.io/$PROJECT_ID/$REPO/client
+        ports:
+          - containerPort: 9999
+        env:
+        - name: FIB_SERVICE_ADDR
+          value: server
+        - name: FIB_SERVICE_PORT
+          value: "3000"
+        - name: HTTP_PORT
+          value: "9999"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client
+spec:
+  type: ClusterIP
+  selector:
+    app: client
+  ports:
+  - name: http
+    port: 80
+    targetPort: 9999
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-external
+spec:
+  type: LoadBalancer
+  selector:
+    app: client
+  ports:
+  - name: http
+    port: 80
+    targetPort: 9999
