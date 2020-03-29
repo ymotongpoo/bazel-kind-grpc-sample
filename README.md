@@ -1,4 +1,4 @@
-# Bazel, Kind and gRPC sample
+# Bazel, Kubernetes and gRPC sample
 
 This is a sample application that demonstrates:
 
@@ -13,11 +13,11 @@ This is a sample application that demonstrates:
 ## prerequisites
 
 * [Bazel](https://bazel.build/)
-* [Kind](https://kind.sigs.k8s.io/) for local testing
+* [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine)
+  * In the case you'd like to run this sample on GKE
+* [Kind](https://kind.sigs.k8s.io/) for local testing (optional)
   * [Docker](https://www.docker.com/)
   * Go 1.11+
-* [Google Kubernetes Engine](https://cloud.google.com/kubernetes-engine) (optional)
-  * In the case you'd like to run this sample on GKE
 
 ## How to run
 
@@ -31,21 +31,35 @@ The author's environment is as the followings:
 * OS: Linux (Arch Linux and Debian Linux)
 * Bazel: 2.2.0
 
-### 2. Install Kind or prepare Kubernetes instance to deploy apps
+### 2a. Setup Google Kubernetes Engine instance to deploy apps
+
+This sample provides easy option to run whole sample on Google Kubernetes Engine (hereby, GKE.)
+
+TODO(ymotongpoo): add short description to create GKE cluster
+
+TODO(ymotongpoo): remove the following part once bazel config successfully being able to deploy app onto GKE.
+Once you get a cluster, you can deploy the sample client and server as follows:
+
+```
+$ envsubst < manifests/client.gke.yaml | kubectl apply -f -
+$ envsubst < manifests/server.gke.yaml | kubectl apply -f -
+```
+
+### 2b. Install Kind or prepare Kubernetes instance to deploy apps
 
 This sample builds containers of a client and a server that communicate with each other in gRPC, and runs them on Kubernetes in coopereted manner.
 
 For ease to use, you need one of the following environments:
 
-* Kind (on Docker)
 * Google Kubernetes Engine
+* Kind (on Docker)
 * ...or whatever Kubernetes cluster you can prepare
 
-#### 2.1 Install Kind
+#### 2b.1 Install Kind
 
 ```
 $ GO111MODULE="on" go get sigs.k8s.io/kind@v0.7.0 && kind create cluster
-```"
+```
 
 ### 3. Run Bazel target
 
