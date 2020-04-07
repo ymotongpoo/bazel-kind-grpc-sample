@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
       - name: server
-        image: gcr.io/$PROJECT_ID/$REPO/server
+        image: gcr.io/development-215403/demo/server
         ports:
         - containerPort: 3000
         env:
@@ -35,7 +35,6 @@ spec:
           value: "0.0.0.0"
         - name: FIB_SERVICE_PORT
           value: "3000"
-        - name:
         resources:
           requests:
             cpu: 100m

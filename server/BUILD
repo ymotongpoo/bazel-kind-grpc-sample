@@ -19,6 +19,7 @@ load(
     "container_push",
     "container_layer",
 )
+load("@k8s_deploy//:defaults.bzl", "k8s_deploy")
 
 go_library(
     name = "go_default_library",
@@ -40,7 +41,7 @@ go_binary(
 )
 
 container_image(
-    name = "server_container",
+    name = "container",
     visibility = ["//:__pkg__"],
     base = "@distroless_base_debian10//image",
     directory = "/workdir",
@@ -54,11 +55,19 @@ container_image(
 )
 
 container_push(
-    name = "server_push",
+    name = "push",
     visibility = ["//:__pkg__"],
     format = "Docker",
     image = ":server_container",
     registry = "gcr.io",
     repository = "$(project_id)/$(repo)",
     tag = "bazel",
+)
+
+k8s_deploy(
+    name = "gke_deploy",
+    images = {
+        "gcr.io/$(project_id)/$(repo)/server": ":container",
+    },
+    template = "//manifests:server.gke.yaml",
 )

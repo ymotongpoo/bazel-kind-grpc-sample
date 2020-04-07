@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
       - name: client
-        image: gcr.io/$PROJECT_ID/$REPO/client
+        image: gcr.io/development-215403/demo/client
         ports:
           - containerPort: 9999
         env:

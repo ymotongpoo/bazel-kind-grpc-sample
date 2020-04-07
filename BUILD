@@ -15,6 +15,7 @@
 load("@bazel_gazelle//:def.bzl", "gazelle")
 load("@io_bazel_rules_docker//container:container.bzl", "container_bundle")
 load("@io_bazel_rules_docker//contrib:push-all.bzl", "container_push")
+load("@io_bazel_rules_k8s//k8s:k8s.bzl", "k8s_object", "k8s_deploy")
 
 exports_files(["LICENSE"])
 
@@ -24,8 +25,8 @@ gazelle(name = "gazelle")
 container_bundle(
     name = "all_container",
     images = {
-        "gcr.io/$(project_id)/$(repo)/client": "//client:client_container",
-        "gcr.io/$(project_id)/$(repo)/server": "//server:server_container",
+        "gcr.io/$(project_id)/$(repo)/client": "//client:container",
+        "gcr.io/$(project_id)/$(repo)/server": "//server:container",
     },
 )
 
