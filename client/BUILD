@@ -68,6 +68,7 @@ container_push(
 
 k8s_deploy(
     name = "gke_deploy",
+    visibility = ["//:__pkg__"],
     images = {
         "gcr.io/$(project_id)/$(repo)/client": ":container",
     },

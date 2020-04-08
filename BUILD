@@ -15,7 +15,7 @@
 load("@bazel_gazelle//:def.bzl", "gazelle")
 load("@io_bazel_rules_docker//container:container.bzl", "container_bundle")
 load("@io_bazel_rules_docker//contrib:push-all.bzl", "container_push")
-load("@io_bazel_rules_k8s//k8s:k8s.bzl", "k8s_object", "k8s_deploy")
+load("@io_bazel_rules_k8s//k8s:objects.bzl", "k8s_objects")
 
 exports_files(["LICENSE"])
 
@@ -34,4 +34,12 @@ container_push(
     name = "push_all",
     bundle = ":all_container",
     format = "Docker",
+)
+
+k8s_objects(
+   name = "gke_deploy",
+   objects = [
+      "//server:gke_deploy",
+      "//client:gke_deploy",
+   ],
 )

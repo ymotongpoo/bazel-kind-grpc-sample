@@ -159,5 +159,6 @@ k8s_defaults(
   #   kubectl config view --minify -o=jsonpath='{.contexts[0].context.cluster}'
   # Use option
   #   --define cluster_name=`kubectl config view --minify -o=jsonpath='{.contexts[0].context.cluster}'``
-  cluster = "$(cluster_name)",
+  cluster = "{K8S_CLUSTER_NAME}",
+  #image_chroot = "gcr.io/{PROJECT_ID}/{REPO}",
 )
