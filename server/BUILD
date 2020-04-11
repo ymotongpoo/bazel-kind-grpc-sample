@@ -19,7 +19,7 @@ load(
     "container_push",
     "container_layer",
 )
-load("@k8s_deploy//:defaults.bzl", "k8s_deploy")
+load("@io_bazel_rules_k8s//k8s:object.bzl", "k8s_object")
 
 go_library(
     name = "go_default_library",
@@ -60,15 +60,19 @@ container_push(
     format = "Docker",
     image = ":server_container",
     registry = "gcr.io",
-    repository = "$(project_id)/$(repo)",
+    repository = "{PROJECT_ID}/{REPO}",
     tag = "bazel",
 )
 
-k8s_deploy(
+k8s_object(
     name = "gke_deploy",
+    kind = "deployment",
     visibility = ["//:__pkg__"],
     images = {
-        "gcr.io/$(project_id)/$(repo)/server": ":container",
+        "gcr.io/{PROJECT_ID}/{REPO}/server": ":container"
     },
+    cluster = "{K8S_CLUSTER_NAME}",
     template = "//manifests:server.gke.yaml",
+    resolver_args = ["--allow_unused_images"],
 )
+

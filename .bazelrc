@@ -1,0 +1,2 @@
+build --workspace_status_command="bash ./variables.sh"
+run --workspace_status_command="bash ./variables.sh"

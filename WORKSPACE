@@ -132,8 +132,8 @@ container_pull(
 # This requires rules_docker to be fully instantiated before
 # it is pulled in.
 # Download the rules_k8s repository
-RULES_K8S_VER="0.3.1"
-RULES_K8S_HASH="cc75cf0d86312e1327d226e980efd3599704e01099b58b3c2fc4efe5e321fcd9"
+RULES_K8S_VER="0.4"
+RULES_K8S_HASH="d91aeb17bbc619e649f8d32b65d9a8327e5404f451be196990e13f5b7e2d17bb"
 
 http_archive(
     name = "io_bazel_rules_k8s",
@@ -150,15 +150,3 @@ load("@io_bazel_rules_k8s//k8s:k8s_go_deps.bzl", k8s_go_deps = "deps")
 
 k8s_go_deps()
 
-k8s_defaults(
-  # This becomes the name of the @repository and the rule
-  # you will import in your BUILD files.
-  name = "k8s_deploy",
-  kind = "deployment",
-  # This is the name of the cluster as it appears in:
-  #   kubectl config view --minify -o=jsonpath='{.contexts[0].context.cluster}'
-  # Use option
-  #   --define cluster_name=`kubectl config view --minify -o=jsonpath='{.contexts[0].context.cluster}'``
-  cluster = "{K8S_CLUSTER_NAME}",
-  #image_chroot = "gcr.io/{PROJECT_ID}/{REPO}",
-)
