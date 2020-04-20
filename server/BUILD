@@ -75,4 +75,3 @@ k8s_object(
     template = "//manifests:server.gke.yaml",
     resolver_args = ["--allow_unused_images"],
 )
-

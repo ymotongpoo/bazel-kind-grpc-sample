@@ -1,0 +1,86 @@
+# Copyright 2020 Yoshi Yamaguchi
+#
+# Licensed under the Apache License, Version 2.0 (the "License")
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client
+spec:
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+      - name: client
+        image: gcr.io/development-215403/demo/client
+        ports:
+          - containerPort: 9999
+        env:
+        - name: FIB_SERVICE_ADDR
+          value: server
+        - name: FIB_SERVICE_PORT
+          value: "3000"
+        - name: HTTP_PORT
+          value: "9999"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 64Mi
+          limits:
+            cpu: 200m
+            memory: 128Mi
+      # Without appropriate secrets settings to gcr.io, you get ErrImagePull or ImagePullBackoff.
+      # The following blog post may help the setting.
+      # https://medium.com/hackernoon/today-i-learned-pull-docker-image-from-gcr-google-container-registry-in-any-non-gcp-kubernetes-5f8298f28969
+      imagePullSecrets:
+        - name: gcr-json-key
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client
+spec:
+  type: ClusterIP
+  selector:
+    app: client
+  ports:
+  - name: http
+    port: 9999
+    targetPort: 9999
+---
+# In order to access to the cluster from localhost, Kind requirs extra ingress settings.
+# Follow the steps described in the official doc.
+# https://kind.sigs.k8s.io/docs/user/ingress/
+#
+# Make sure to apply patch to the deployment above after creating deployment, service and ingress.
+# $ kubectl patch deployments client -p \
+#   '{"spec":{"template":{"spec":{"containers":[{"name":"client","ports":[{"containerPort":9999,"hostPort":9999}]}],"nodeSelector":{"ingress-ready":"true"},"tolerations":[{"key":"node-role.kubernetes.io/master","operator":"Equal","effect":"NoSchedule"}]}}}}'
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: client-ingress
+  annotations:
+    ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        backend:
+          serviceName: client
+          servicePort: 9999
